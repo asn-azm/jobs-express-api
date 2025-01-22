@@ -8,7 +8,7 @@ const port = 5000;
 
 let cachedClient = null;
 let cachedDb = null;
-const uri = "mongodb+srv://asnazm:AhsanAzam782404@jobs-app-db.gvv6l.mongodb.net/?retryWrites=true&w=majority&appName=jobs-app-db";
+const uri = process.env.MONGODB_URI;
 
 async function connectToDatabase() {
     if (cachedClient && cachedDb) {
@@ -30,6 +30,8 @@ async function connectToDatabase() {
 
 
 app.use(cors());
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
     res.send('Welcome to the Jobs API')
@@ -67,13 +69,14 @@ app.get('/api/jobs/:id', async (req, res) => {
 // Update a job by ID
 app.put('/api/jobs/:id', async (req, res) => {
     const { id } = req.params;
-    const { title, company, description } = req.body;
+    const updatedJob = req.body;
+    console.log(JSON.stringify(updatedJob));
     try {
         const { db } = await connectToDatabase();
         const jobsCollection = db.collection('jobs');
         const result = await jobsCollection.updateOne(
             { _id: new ObjectId(id) },
-            { $set: { title, company, description } }
+            { $set: updatedJob }
         );
         if (result.matchedCount === 0) {
             return res.status(404).json({ error: 'Job not found' });
