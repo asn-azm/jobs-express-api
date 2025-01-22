@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors')
 const { MongoClient, ObjectId } = require('mongodb');
 
 const app = express();
@@ -28,7 +29,7 @@ async function connectToDatabase() {
 }
 
 
-
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send('Welcome to the Jobs API')
