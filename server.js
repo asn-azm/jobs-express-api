@@ -7,7 +7,7 @@ const port = 5000;
 
 let cachedClient = null;
 let cachedDb = null;
-const uri = process.env.MONGODB_URI;
+const uri = "mongodb+srv://asnazm:AhsanAzam782404@jobs-app-db.gvv6l.mongodb.net/?retryWrites=true&w=majority&appName=jobs-app-db";
 
 async function connectToDatabase() {
     if (cachedClient && cachedDb) {
